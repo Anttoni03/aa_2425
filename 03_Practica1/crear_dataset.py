@@ -3,6 +3,7 @@ import numpy as np
 import xml.etree.ElementTree as etree
 from skimage.io import imread
 from skimage.transform import resize
+from skimage.feature import hog
 
 # https://www.kaggle.com/datasets/andrewmvd/dog-and-cat-detection/code
 
@@ -77,15 +78,29 @@ def obtenir_dades(carpeta_imatges, carpeta_anotacions, mida=(64, 64)):
 def obtenirHoG(imatges):
 
     # TODO: POSA EL TEU CODI
+    hog_features = []
+
+    for image in imatges:
+
+        # Obtener el HOG de la imagen
+        features, hog_image = hog(image,
+                                  pixels_per_cell=(8, 8),
+                                  cells_per_block=(2, 2),
+                                  visualize=True,
+                                  multichannel=False)
+
+        # Guardar los features del HOG
+        hog_features.append(features)
 
     return
 
 def main():
     carpeta_images = "gatigos/images"  # NO ES POT MODIFICAR
     carpeta_anotacions = "gatigos/annotations"  # NO ES POT MODIFICAR
-    mida = (1, 1)  # DEFINEIX LA MIDA, ES RECOMANA COMENÇAR AMB 64x64
+    mida = (64, 64)  # DEFINEIX LA MIDA, ES RECOMANA COMENÇAR AMB 64x64
     imatges, etiquetes = obtenir_dades(carpeta_images, carpeta_anotacions, mida)
 
+    print(imatges[:,:,0])
     # caracteristiques = obtenirHoG(imatges)
 
 
